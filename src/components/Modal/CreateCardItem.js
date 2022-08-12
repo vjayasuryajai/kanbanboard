@@ -55,6 +55,12 @@ const types = {
   alignItems: "center",
   width: "100px",
 };
+const statusSelect = {
+  width: "130px",
+  display: "flex",
+  marginTop: "5px",
+  justifyContent: "center",
+};
 function CreateCardItem({ isCardOpen, onClose, setIsCardOpen }) {
   const [title, setTitle] = useState("");
   const Data = useSelector((state) => state.board.laneList);
@@ -79,7 +85,7 @@ function CreateCardItem({ isCardOpen, onClose, setIsCardOpen }) {
       dispatch(
         insertCard({
           type: currentStatus,
-          item: { desciption: title, id: id, type: type },
+          item: { description: title, id: id, type: type },
         })
       );
       setIsCardOpen(false);
@@ -111,22 +117,14 @@ function CreateCardItem({ isCardOpen, onClose, setIsCardOpen }) {
               <label style={{ display: "flex", justifyContent: "left" }}>
                 Description
               </label>
-              <input
+              <textarea
                 style={inputTitle}
                 onChange={changeHandler}
                 value={title}
-              ></input>
+              ></textarea>
               <div style={types}>
                 <label>Type</label>
-                <select
-                  style={{
-                    width: "130px",
-                    display: "flex",
-                    marginTop: "5px",
-                    justifyContent: "center",
-                  }}
-                  onChange={onChangeHandler}
-                >
+                <select style={statusSelect} onChange={onChangeHandler}>
                   <option>Select</option>
                   {Types.map((type) => (
                     <option>{type}</option>

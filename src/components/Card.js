@@ -2,13 +2,18 @@ import React from "react";
 import CloseIcon from "./Icons/CloseIcon";
 import { useDispatch } from "react-redux";
 import { deleteLane, deleteCard } from "../features/KanbanSlice";
-
+import { useState } from "react";
 const card = {
   display: "flex",
   flexDirection: "column",
   marginLeft: "20px",
 };
 const CardItem = {
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+};
+const cardTitle = {
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
@@ -46,6 +51,7 @@ const feature = {
   marginLeft: "10px",
   fontWeight: "600",
 };
+const cardType = { padding: "10px", fontSize: "16px", fontWeight: "700" };
 
 const request = {
   color: "green",
@@ -55,6 +61,8 @@ const request = {
 };
 
 function Card({ data }) {
+  const [onMouseHover, setOnMoseHover] = useState(false);
+  const [showCloseIcon, setCloseShowIcon] = useState(-1);
   const dispatch = useDispatch();
   const deleteRow = (type) => {
     dispatch(deleteLane({ type }));
@@ -62,27 +70,48 @@ function Card({ data }) {
   const deleteCardItem = (type, id) => {
     dispatch(deleteCard({ type: type, id: id }));
   };
+  const handleTitleMouseEnter = () => {
+    setOnMoseHover(true);
+  };
+  const handleTitleMouseLeave = () => {
+    setOnMoseHover(false);
+  };
+  const handleCardMouseEnter = (id) => {
+    setCloseShowIcon(id);
+  };
+  const handleCardMouseLeave = () => {
+    setCloseShowIcon(-1);
+  };
   return (
     <div style={card}>
-      <div style={CardItem}>
-        <text style={{ padding: "10px",fontSize:"18px",fontWeight:"800" }}>
+      <div
+        style={CardItem}
+        onMouseEnter={handleTitleMouseEnter}
+        onMouseLeave={handleTitleMouseLeave}
+      >
+        <text style={cardType}>
           {data.type} ({data.items.length})
         </text>
-        <div style={{ marginTop: "10px" }} onClick={() => deleteRow(data.type)}>
-          <CloseIcon />
-        </div>
+        {onMouseHover && (
+          <div
+            style={{ marginTop: "10px" }}
+            onClick={() => deleteRow(data.type)}
+          >
+            <CloseIcon />
+          </div>
+        )}
       </div>
+
       <div>
         {data.items?.map((cardItem) => {
           return (
-            <div style={cardItems}>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
+            <div
+              onMouseEnter={() => handleCardMouseEnter(cardItem.id)}
+              onMouseLeave={() => handleCardMouseLeave(cardItem.id)}
+              style={cardItems}
+              key={cardItem.id}
+            >
+              <div style={cardTitle}>
                 <div>
                   <div
                     style={{
@@ -101,7 +130,7 @@ function Card({ data }) {
                     style={{
                       display: "flex",
                       flexDirection: "row",
-                      marginTop: "3px",
+                      marginTop: "10px",
                     }}
                   >
                     <div
@@ -118,14 +147,18 @@ function Card({ data }) {
                     </div>
                   </div>
                 </div>
+
                 <span
-                  style={{ marginTop: "-10px" }}
+                  style={{
+                    marginTop: "-10px",
+                    display: showCloseIcon === cardItem.id ? "block" : "none",
+                  }}
                   onClick={() => deleteCardItem(data.type, cardItem.id)}
                 >
                   <CloseIcon />
                 </span>
               </div>
-              <div style={description} id={data.id}>
+              <div style={description} id={cardItem.id}>
                 {cardItem.description}
               </div>
             </div>

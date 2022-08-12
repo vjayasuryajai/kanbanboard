@@ -48,7 +48,7 @@ function Board() {
             </div>
           );
         })}
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex",flexDirection:"column" }}>
           <div style={{ marginTop: "10px", marginLeft: "10px" }}>
             <button style={buttons} onClick={createNewLane}>
               Create Lane

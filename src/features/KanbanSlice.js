@@ -16,8 +16,8 @@ const initialState = {
     {
       type: "InProgress",
       items: [
-        { description: "", id: "12", type: "Bug" },
-        { description: "", id: "23", type: "Bug" },
+        { description: "Total Count is not working", id: "12", type: "Bug" },
+        { description: "Button Missing", id: "23", type: "Bug" },
       ],
     },
     {
