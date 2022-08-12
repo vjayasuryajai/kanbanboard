@@ -42,7 +42,7 @@ export const BoardSlice = createSlice({
   initialState,
   reducers: {
     addLane: (state, action) => {
-      state.laneList = [...state.value, action.payload];
+      state.laneList = [...state.laneList, action.payload];
     },
 
     deleteLane: (state, action) => {
